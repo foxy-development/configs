@@ -20,8 +20,6 @@ on:
         type: string
         default: ${{ github.repository }}
     secrets:
-      TOKEN:
-        required: true # required for docker
       TS_OAUTH_CLIENT_ID:
         required: false # only if deploying
       TS_OAUTH_SECRET:
@@ -97,7 +95,6 @@ jobs:
           repository: foxy-development/configs
           fetch-depth: 1
           show-progress: false # spammy
-          token: ${{ secrets.TOKEN }}
 
       - name: Download artifact
         uses: actions/download-artifact@v4
