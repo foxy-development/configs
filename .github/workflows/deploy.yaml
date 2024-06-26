@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to intranet
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:gh-actions
+
+      - name: Deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_SSH_USERNAME }}@${{ secrets.DEPLOY_SSH_HOST }} '
+            cd /docker
+            docker compose run watchtower --run-once --no-startup-message $(docker inspect -f '{{.Name}}' $(docker compose ps -q ${{ inputs.service-name }}) | cut -c2-)
+            docker compose up --wait ${{ inputs.service-name }}
+            '

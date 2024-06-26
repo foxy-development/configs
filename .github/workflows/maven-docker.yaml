@@ -1,0 +1,108 @@
+name: Maven Build + Docker Image/Deploy
+
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        required: false
+        type: string
+        default: ${{ github.repository }}
+      deploy:
+        description:
+          If the service should be deployed (this must be true AND we must be on the mainline
+          branch)
+        required: false
+        type: boolean
+        default: true
+      service-name:
+        description: Name of the service to deploy
+        required: false
+        type: string
+        default: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          show-progress: false # spammy
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package verify
+
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: app.jar
+          path: target/*.jar
+          retention-days: 1
+
+  dockerize:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == github.event.repository.default_branch }}
+
+    steps:
+      - name: Print Docker version
+        run: docker version
+
+      - name: Install Latest Docker
+        run: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+          sudo apt-get update
+          sudo apt-get install docker-ce
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ inputs.image-name }}
+
+      - name: Checkout template repo
+        uses: actions/checkout@v4
+        with:
+          repository: foxy-development/configs
+          fetch-depth: 1
+          show-progress: false # spammy
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app.jar
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./docker
+          file: ./Dockerfile.java-template
+          push: ${{ inputs.deploy }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: [dockerize]
+    if: ${{ github.ref == github.event.repository.default_branch && inputs.deploy == 'true' }}
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      service-name: ${{ inputs.service-name }}
