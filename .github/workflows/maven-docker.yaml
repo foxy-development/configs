@@ -97,7 +97,7 @@ jobs:
           repository: foxy-development/configs
           fetch-depth: 1
           show-progress: false # spammy
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TOKEN }}
 
       - name: Download artifact
         uses: actions/download-artifact@v4
