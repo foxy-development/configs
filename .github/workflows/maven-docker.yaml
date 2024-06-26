@@ -50,7 +50,7 @@ jobs:
   dockerize:
     needs: [build]
     runs-on: ubuntu-latest
-    if: ${{ github.ref == github.event.repository.default_branch }}
+    if: ${{ github.ref_name == github.event.repository.default_branch }}
 
     permissions:
       contents: read
@@ -103,7 +103,7 @@ jobs:
 
   deploy:
     needs: [dockerize]
-    if: ${{ github.ref == github.event.repository.default_branch && inputs.deploy }}
+    if: ${{ github.ref_name == github.event.repository.default_branch && inputs.deploy }}
     uses: ./.github/workflows/deploy.yaml
     with:
       service-name: ${{ inputs.service-name }}
