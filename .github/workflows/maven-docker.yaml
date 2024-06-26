@@ -39,22 +39,22 @@ jobs:
           fetch-depth: 1
           show-progress: false # spammy
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: maven
+      # - name: Set up JDK 21
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     java-version: "21"
+      #     distribution: "temurin"
+      #     cache: maven
 
-      - name: Build with Maven
-        run: mvn -B package verify
+      # - name: Build with Maven
+      #   run: mvn -B package verify
 
-      - name: Upload package
-        uses: actions/upload-artifact@v4
-        with:
-          name: app.jar
-          path: target/*.jar
-          retention-days: 1
+      # - name: Upload package
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: app.jar
+      #     path: target/*.jar
+      #     retention-days: 1
 
   dockerize:
     needs: [build]
@@ -96,16 +96,16 @@ jobs:
           fetch-depth: 1
           show-progress: false # spammy
 
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: app.jar
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: app.jar
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: ./docker
-          file: ./Dockerfile.java-template
+          file: ./docker/Dockerfile.java-template
           push: ${{ inputs.deploy }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
