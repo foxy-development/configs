@@ -48,6 +48,7 @@ jobs:
           retention-days: 1
 
   dockerize:
+    needs: [build]
     runs-on: ubuntu-latest
     if: ${{ github.ref == github.event.repository.default_branch }}
 
