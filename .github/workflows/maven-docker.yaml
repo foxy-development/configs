@@ -20,7 +20,7 @@ on:
         type: string
         default: ${{ github.repository }}
     secrets:
-      GITHUB_TOKEN:
+      TOKEN:
         required: true # required for docker
       TS_OAUTH_CLIENT_ID:
         required: false # only if deploying
