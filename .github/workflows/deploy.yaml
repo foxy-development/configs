@@ -6,6 +6,15 @@ on:
       service-name:
         required: true
         type: string
+    secrets:
+      TS_OAUTH_CLIENT_ID:
+        required: true
+      TS_OAUTH_SECRET:
+        required: true
+      DEPLOY_SSH_USERNAME:
+        required: true
+      DEPLOY_SSH_HOST:
+        required: true
 
 jobs:
   deploy:
