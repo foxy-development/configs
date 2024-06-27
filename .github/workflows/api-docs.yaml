@@ -36,7 +36,7 @@ jobs:
           mkdir -p out
           ls -R
           for path in ${{ inputs.definition-path }}; do
-            bunx @redocly/cli build-docs path -o out/${{ inputs.name-expression }}.html
+            bunx @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html
           done
 
       - name: Upload documentation
