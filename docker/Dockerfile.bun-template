@@ -1,0 +1,36 @@
+FROM oven/bun:alpine AS base
+
+FROM base AS build
+
+  WORKDIR /app
+
+  COPY package.json package.json
+  COPY bun.lockb bun.lockb
+
+  ENV NODE_ENV=production
+  RUN bun install --frozen-lockfile
+
+  COPY ${ROOT} .
+
+  ENV NODE_ENV=production
+  RUN bunx next build --no-lint
+
+FROM node:20-alpine AS production
+
+  # for healthcheck
+  RUN apk add --no-cache curl
+
+  COPY --from=build /app/.next/standalone .
+  COPY --from=build /app/.next/static .next/static
+  COPY ${ROOT}/public public
+
+  ENV NODE_ENV=production
+
+  ENV HOSTNAME=0.0.0.0
+  ENV PORT=${PORT}
+
+  EXPOSE ${PORT}
+  ENTRYPOINT ["node", "server.js"]
+
+  HEALTHCHECK --start-interval=2s --interval=1m --timeout=5s --retries=0 --start-period=30s \
+    CMD curl --fail --silent localhost:${PORT}/api/health | grep UP || exit 1
