@@ -55,9 +55,12 @@ jobs:
 
       - name: Generate template
         run: |
-          perl -p -i -e 's/\${PORT}/${{ inputs.port }}/g' configs/docker/Dockerfile.bun-template
-          perl -p -i -e 's/\${ROOT}/${{ inputs.build-root }}/g' configs/docker/Dockerfile.bun-template
-          cat configs/docker/Dockerfile.bun-template
+          awk '{
+            gsub(/\$\{PORT\}/,"${{ inputs.port }}");
+            gsub(/\$\{ROOT\}/,"${{ inputs.build-root }}");
+            print
+          }' configs/docker/Dockerfile.bun-template > configs/docker/Dockerfile
+          cat configs/docker/Dockerfile.bun
 
       - name: Print Docker version
         run: docker version
