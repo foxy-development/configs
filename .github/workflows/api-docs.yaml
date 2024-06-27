@@ -1,0 +1,45 @@
+name: Generate API Docs
+
+on:
+  workflow_call:
+    inputs:
+      definition-path:
+        required: false
+        type: string
+        default: src/main/resources/api/**/api.yaml
+      name-expression:
+        required: false
+        type: string
+        default: $(basename ${path%/api.yaml})
+    secrets:
+      API_DOCS_PAT:
+        required: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          show-progress: false # spammy
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install redocly CLI
+        run: bun install -g @redocly/cli
+
+      - name: Generate documentation
+        run: |
+          mkdir -p out
+          for path in ${{ inputs.definition-path }}; do
+            bunx @redocly/cli build-docs path -o out/${{ inputs.name-expression }}.html
+          done
+
+      - name: Upload documentation
+        uses: actions/upload-artifact@v4
+        with:
+          path: out
+          name: api-docs
