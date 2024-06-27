@@ -34,9 +34,12 @@ jobs:
       - name: Generate documentation
         run: |
           set -x
+          echo 'bun x @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html' > gen.sh
+          cat gen.sh
+          chmod +x gen.sh
           mkdir -p out
           for path in ${{ inputs.definition-path }}; do
-            bun x @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html
+            ./gen.sh
           done
 
       - name: Upload documentation
