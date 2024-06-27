@@ -55,8 +55,8 @@ jobs:
 
       - name: Generate template
         run: |
-          sed -i "s/{PORT}/${{ inputs.port }}/g" configs/docker/Dockerfile.bun-template
-          sed -i "s/{ROOT}/${{ inputs.build-root }}/g" configs/docker/Dockerfile.bun-template
+          perl -p -i -e 's/\${PORT}/${{ inputs.port }}/g' configs/docker/Dockerfile.bun-template
+          perl -p -i -e 's/\${ROOT}/${{ inputs.build-root }}/g' configs/docker/Dockerfile.bun-template
           cat configs/docker/Dockerfile.bun-template
 
       - name: Print Docker version
