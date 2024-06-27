@@ -1,16 +1,12 @@
-name: Bun Docker Build/Deploy
+name: Bun Docker Build/Deploy for Vite
 
 on:
   workflow_call:
     inputs:
-      build-root:
-        required: false
-        type: string
-        default: .
       port:
         required: false
         type: number
-        default: 3000
+        default: 5173
       image-name:
         required: false
         type: string
@@ -57,9 +53,8 @@ jobs:
         run: |
           awk '{
             gsub(/\$\{PORT\}/,"${{ inputs.port }}");
-            gsub(/\$\{ROOT\}/,"${{ inputs.build-root }}");
             print
-          }' configs/docker/Dockerfile.bun-template > configs/docker/Dockerfile.bun
+          }' configs/docker/Dockerfile.bun-template-vite > configs/docker/Dockerfile.bun
           cat configs/docker/Dockerfile.bun
 
       - name: Print Docker version

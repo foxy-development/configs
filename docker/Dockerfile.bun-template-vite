@@ -1,0 +1,24 @@
+FROM oven/bun:alpine
+
+# for healthcheck
+RUN apk add --no-cache curl
+
+WORKDIR /app
+COPY . .
+ENV NODE_ENV=production
+
+# module resolution breaks if we only install production modules
+# ENV NODE_ENV=production
+RUN bun install --frozen-lockfile
+
+ENV NODE_ENV=production
+RUN bun run build
+
+ENV HOSTNAME=0.0.0.0
+ENV PORT=${PORT}
+
+EXPOSE ${PORT}
+ENTRYPOINT ["bun", "server.ts"]
+
+HEALTHCHECK --start-interval=5s --interval=1m --timeout=5s --retries=0 --start-period=30s \
+  CMD curl --fail --silent localhost:${PORT} || exit 1
