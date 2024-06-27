@@ -33,7 +33,7 @@ jobs:
 
       - name: Generate documentation
         run: |
-          bunx "@redocly/cli" build-docs src/main/resources/api/api.yaml -o out/test.html
+          bunx "\@redocly/cli" build-docs src/main/resources/api/api.yaml -o out/test.html
         # mkdir -p out
         # ls -R
         # for path in ${{ inputs.definition-path }}; do
