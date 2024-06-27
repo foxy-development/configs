@@ -7,6 +7,8 @@ FROM base AS build
   COPY package.json package.json
   COPY bun.lockb bun.lockb
 
+  RUN apk add --no-cache python make g++
+
   ENV NODE_ENV=production
   RUN bun install --frozen-lockfile
 
