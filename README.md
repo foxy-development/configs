@@ -15,6 +15,13 @@ Watchtower.
 | -------------- | ------- | --------------------------------- | -------- | ------- |
 | `service-name` | boolean | The name of the service to deploy | Yes      | N/A     |
 
+| Secret                | Required | Description                   |
+| --------------------- | -------- | ----------------------------- |
+| `TS_OAUTH_CLIENT_ID`  | Yes      | Tailscale Oauth client ID     |
+| `TS_OAUTH_SECRET`     | Yes      | Tailscale Oauth client secret |
+| `DEPLOY_SSH_USERNAME` | Yes      | Deployment server username    |
+| `DEPLOY_SSH_HOST`     | Yes      | Deployment server hostname    |
+
 ### Maven Build + Dockerize (`maven-docker.yaml`)
 
 Builds a Maven project and (on mainline) creates a Docker image, optionally deploying it.
@@ -24,3 +31,10 @@ Builds a Maven project and (on mainline) creates a Docker image, optionally depl
 | `image-name`   | string  | The image name to publish the package as                              | No       | `${{ github.repository }}` |
 | `deploy`       | boolean | If the docker image should be pushed and deployed for the main branch | No       | True                       |
 | `service-name` | string  | The name of the service to deploy                                     | No       | `${{ github.repository }}` |
+
+| Secret                | Required                   | Description                   |
+| --------------------- | -------------------------- | ----------------------------- |
+| `TS_OAUTH_CLIENT_ID`  | If `inputs.deploy == True` | Tailscale Oauth client ID     |
+| `TS_OAUTH_SECRET`     | If `inputs.deploy == True` | Tailscale Oauth client secret |
+| `DEPLOY_SSH_USERNAME` | If `inputs.deploy == True` | Deployment server username    |
+| `DEPLOY_SSH_HOST`     | If `inputs.deploy == True` | Deployment server hostname    |
