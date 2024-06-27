@@ -33,10 +33,6 @@ jobs:
 
       - name: Generate documentation
         run: |
-          set -x
-          echo 'npx @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html' > gen.sh
-          cat gen.sh
-          chmod +x gen.sh
           mkdir -p out
           for path in ${{ inputs.definition-path }}; do
             npx @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html
