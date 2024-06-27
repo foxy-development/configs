@@ -26,7 +26,7 @@ jobs:
           show-progress: false # spammy
 
       - name: Set up Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v1
 
       - name: Install redocly CLI
         run: bun install -g @redocly/cli
