@@ -6,7 +6,6 @@ RUN apk add --no-cache curl
 COPY *.jar app.jar
 
 EXPOSE 8080
-VOLUME /opt/uploads
 
 HEALTHCHECK --start-interval=2s --interval=1m --timeout=5s --retries=5 --start-period=90s \
     CMD curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1
