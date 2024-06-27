@@ -39,7 +39,7 @@ jobs:
           chmod +x gen.sh
           mkdir -p out
           for path in ${{ inputs.definition-path }}; do
-            ./gen.sh
+            npx @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html
           done
 
       - name: Upload documentation
