@@ -25,16 +25,16 @@ jobs:
           fetch-depth: 1
           show-progress: false # spammy
 
-      - name: Set up Bun
-        uses: oven-sh/setup-bun@v1
+      - name: Set up Node
+        uses: actions/setup-node@v4
 
       - name: Install redocly CLI
-        run: bun install -g @redocly/cli
+        run: npm install -g @redocly/cli
 
       - name: Generate documentation
         run: |
           set -x
-          echo 'bun x @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html' > gen.sh
+          echo 'npx @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html' > gen.sh
           cat gen.sh
           chmod +x gen.sh
           mkdir -p out
