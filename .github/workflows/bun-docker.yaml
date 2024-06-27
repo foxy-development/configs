@@ -59,7 +59,7 @@ jobs:
             gsub(/\$\{PORT\}/,"${{ inputs.port }}");
             gsub(/\$\{ROOT\}/,"${{ inputs.build-root }}");
             print
-          }' configs/docker/Dockerfile.bun-template > configs/docker/Dockerfile
+          }' configs/docker/Dockerfile.bun-template > configs/docker/Dockerfile.bun
           cat configs/docker/Dockerfile.bun
 
       - name: Print Docker version
@@ -89,7 +89,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./app
-          file: ./configs/docker/Dockerfile.bun-template
+          file: ./configs/docker/Dockerfile.bun
           push: ${{ github.ref_name == github.event.repository.default_branch && inputs.deploy }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
