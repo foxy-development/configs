@@ -34,6 +34,7 @@ jobs:
       - name: Generate documentation
         run: |
           mkdir -p out
+          ls -R
           for path in ${{ inputs.definition-path }}; do
             bunx @redocly/cli build-docs path -o out/${{ inputs.name-expression }}.html
           done
