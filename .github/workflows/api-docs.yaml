@@ -33,12 +33,11 @@ jobs:
 
       - name: Generate documentation
         run: |
-          bunx "\\@redocly/cli" build-docs src/main/resources/api/api.yaml -o out/test.html
-        # mkdir -p out
-        # ls -R
-        # for path in ${{ inputs.definition-path }}; do
-        #   bunx @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html
-        # done
+          mkdir -p out
+          ls -R
+          for path in ${{ inputs.definition-path }}; do
+            bun x @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html
+          done
 
       - name: Upload documentation
         uses: actions/upload-artifact@v4
