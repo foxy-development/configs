@@ -101,12 +101,10 @@ jobs:
         with:
           name: app.jar
 
-      - run: ls -R
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./docker
+          context: .
           file: ./docker/Dockerfile.java-template
           push: ${{ inputs.deploy }}
           tags: ${{ steps.meta.outputs.tags }}
