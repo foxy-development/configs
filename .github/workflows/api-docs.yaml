@@ -33,8 +33,8 @@ jobs:
 
       - name: Generate documentation
         run: |
+          set -x
           mkdir -p out
-          ls -R
           for path in ${{ inputs.definition-path }}; do
             bun x @redocly/cli build-docs $path -o out/${{ inputs.name-expression }}.html
           done
