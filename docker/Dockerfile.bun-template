@@ -13,7 +13,7 @@ FROM base AS build
   COPY ${ROOT} .
 
   ENV NODE_ENV=production
-  RUN bunx next build --no-lint
+  RUN bun build:flat
 
 FROM node:20-alpine AS production
 
