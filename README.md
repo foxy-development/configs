@@ -31,6 +31,7 @@ Builds a Maven project and (on mainline) creates a Docker image, optionally depl
 
 | Input          | Type    | Description                                                           | Required | Default                    |
 | -------------- | ------- | --------------------------------------------------------------------- | -------- | -------------------------- |
+| `base-dir`     | string  | The base directory of the Maven project                               | No       | `.`                        |
 | `image-name`   | string  | The image name to publish the package as                              | No       | `${{ github.repository }}` |
 | `deploy`       | boolean | If the docker image should be pushed and deployed for the main branch | No       | True                       |
 | `service-name` | string  | The name of the service to deploy                                     | No       | `${{ github.repository }}` |

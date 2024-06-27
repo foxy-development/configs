@@ -3,6 +3,10 @@ name: Maven Build + Docker Image/Deploy
 on:
   workflow_call:
     inputs:
+      base-dir:
+        required: false
+        type: string
+        default: .
       image-name:
         required: false
         type: string
@@ -48,11 +52,12 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package verify
+        working-directory: ${{ inputs.base-dir }}
 
       - name: Upload package
         uses: actions/upload-artifact@v4
         with:
-          name: app.jar
+          name: ${{ inputs.base-dir }}/app.jar
           path: target/*.jar
           retention-days: 1
 
