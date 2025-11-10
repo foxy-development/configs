@@ -39,14 +39,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           show-progress: false # spammy
           path: app
 
       - name: Checkout template repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: foxy-development/configs
           fetch-depth: 1
