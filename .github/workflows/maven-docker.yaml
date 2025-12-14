@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 1
           show-progress: false # spammy
@@ -95,7 +95,7 @@ jobs:
           images: ghcr.io/${{ inputs.image-name }}
 
       - name: Checkout template repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: foxy-development/configs
           fetch-depth: 1
