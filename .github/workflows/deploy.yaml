@@ -31,6 +31,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_SSH_USERNAME }}@${{ secrets.DEPLOY_SSH_HOST }} '
             cd /docker
-            docker compose run watchtower --run-once --no-startup-message $(docker inspect -f '{{.Name}}' $(docker compose ps -q ${{ inputs.service-name }}) | cut -c2-)
+            docker compose run --rm watchtower --run-once --no-startup-message $(docker inspect -f '{{.Name}}' $(docker compose ps -q ${{ inputs.service-name }}) | cut -c2-)
             docker compose up --wait ${{ inputs.service-name }}
             '
