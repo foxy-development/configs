@@ -68,7 +68,7 @@ jobs:
           sudo apt-get install docker-ce
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
